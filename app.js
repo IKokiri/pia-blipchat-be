@@ -3,7 +3,7 @@ var app = express();
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
-  res.send('get request');
+  res.send('get request1');
 });
 
 app.post('/', function(req, res) {
@@ -11,5 +11,5 @@ app.post('/', function(req, res) {
 });
 
 app.listen(process.env.PORT || 5000, function () {
-    console.log("dss");
+    
 });
