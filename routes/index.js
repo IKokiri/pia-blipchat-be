@@ -49,7 +49,7 @@ router.post('/', function(req, res, next) {
       if (err) throw err;
     });
 
-    res.send("criado")
+    res.send("ok")
   
   });
   
