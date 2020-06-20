@@ -7,15 +7,21 @@ const CONNECTION_URL = "mongodb+srv://luizmendes:Pass1234@cluster0-c1rpf.mongodb
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-var c
+
 MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
+  
   if(error) {
       throw error;
   }
+
   database = client.db(DATABASE_NAME);
   collection = database.collection("custom");
+  
+  var myobj = {"header":"header1","send":"send1","received":"received1","background":"background1","icon":"icon1"};
 
-
+  database.collection("custom").insertOne(myobj, function(err, res) {
+    if (err) throw err;
+  });
 
   database.collection("custom").find({}).toArray(function(err, result) {
     if (err) throw err;
@@ -23,8 +29,6 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
     res.send(result)
   });
 
-  // console.log(a.ReadableState);
-  // res.send(a.ReadableState)
 });
 
 
