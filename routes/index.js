@@ -41,7 +41,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
 
 /* POST home page. */
 // router.post('/',cors(corsOptions), function(req, res, next) {
-  router.post('/:header/:send/:received/:background/:icon',cors(corsOptions), function(req, res, next) {
+  router.post('/:withstyle/:withbutton',cors(corsOptions), function(req, res, next) {
   
   MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
     
@@ -50,13 +50,10 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
     }
   
     database = client.db(DATABASE_NAME);
-    
+
     var myobj = {
-      "header":req.params.header,
-      "send":req.params.send,
-      "received":req.params.received,
-      "background":req.params.background,
-      "icon":req.params.icon
+      "ws":req.params.withstyle.replace(/@@/g, "#"),
+      "wb":req.params.withbutton.replace(/@@/g, "/"),
     };
   
     database.collection("custom").insertOne(myobj, function(err, res) {
