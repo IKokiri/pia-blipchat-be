@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
+var mongo = require('mongodb');
 const MongoClient = require("mongodb").MongoClient;
 const DATABASE_NAME = "piablipchat";
 const CONNECTION_URL = "mongodb+srv://luizmendes:Pass1234@cluster0-c1rpf.mongodb.net/"+DATABASE_NAME+"?retryWrites=true&w=majority";
@@ -65,4 +66,30 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
   });
   
   });
+
+  router.get('/:id',cors(corsOptions), function(req, res, next) {
+  
+    console.log(req.params.id)
+    MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
+      
+      if(error) {
+          throw error;
+      }
+    
+      database = client.db(DATABASE_NAME);
+  
+      var o_id = new mongo.ObjectID(req.params.id);
+      database.collection("custom").find({_id:o_id}).toArray(function(err, result) {
+        if (err) throw err;
+        // res.json(result[0]);
+        res.json(result[0])
+        
+      });
+  
+      // res.send("{'status':'ok1'}")
+    
+    });
+    
+    });
 module.exports = router;
+
