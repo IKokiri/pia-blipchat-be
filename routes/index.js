@@ -5,9 +5,22 @@ const MongoClient = require("mongodb").MongoClient;
 const DATABASE_NAME = "piablipchat";
 const CONNECTION_URL = "mongodb+srv://luizmendes:Pass1234@cluster0-c1rpf.mongodb.net/"+DATABASE_NAME+"?retryWrites=true&w=majority";
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
 
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+
+const corsOptions = {
+  origin: 'http://localhost:3001'
+}
+/* GET home page. */
+// router.get('/',cors(),function(req, res, next) {
+  router.get('/',function(req, res, next) {
+  
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'Content-Type')
+  
 MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
   
   if(error) {
@@ -16,7 +29,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
 
   database = client.db(DATABASE_NAME);
 
-  database.collection("custom").find({}).toArray(function(err, result) {
+  database.collection("custom").find({}).limit(5).toArray(function(err, result) {
     if (err) throw err;
     
     res.json(result)
@@ -27,8 +40,9 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
 });
 
 /* POST home page. */
-router.post('/', function(req, res, next) {
-
+// router.post('/',cors(corsOptions), function(req, res, next) {
+  router.post('/:header/:send/:received/:background/:icon',cors(corsOptions), function(req, res, next) {
+  
   MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
     
     if(error) {
@@ -38,18 +52,18 @@ router.post('/', function(req, res, next) {
     database = client.db(DATABASE_NAME);
     
     var myobj = {
-      "header":req.body.header,
-      "send":req.body.send,
-      "received":req.body.received,
-      "background":req.body.background,
-      "icon":req.body.icon
+      "header":req.params.header,
+      "send":req.params.send,
+      "received":req.params.received,
+      "background":req.params.background,
+      "icon":req.params.icon
     };
   
     database.collection("custom").insertOne(myobj, function(err, res) {
       if (err) throw err;
     });
 
-    res.send("ok")
+    res.send("{'status':'ok'}")
   
   });
   
