@@ -13,7 +13,7 @@ var app = express()
 
 
 const corsOptions = {
-  origin: 'http://localhost:3001'
+  origin: 'https://ikokiri.github.io/pia-blipchat'
 }
 /* GET home page. */
 // router.get('/',cors(),function(req, res, next) {
